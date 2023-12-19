@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+// #include "raw_hid.h"
 
 enum charybdis_keymap_layers {
     LAYER_BASE = 0,
@@ -143,7 +144,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
 KC_LCTL, TG(LAYER_CALC), KC_NO, KC_RGUI, KC_BSPC, TG(LAYER_MOUSE), KC_MINUS, KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS, KC_GRV,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       KC_LALT, KC_NO, C(KC_X), KC_NO,  C(A(KC_P)), KC_NO,       KC_UNDS, KC_PLUS,  KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
+       KC_LALT, KC_NO, C(KC_X), KC_NO,  DPI_RMOD, DPI_MOD,       KC_UNDS, KC_PLUS,  KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   KC_LGUI, KC_TRNS, KC_SPC,    KC_TRNS, KC_TRNS
   //                            ╰───────────────────────────╯ ╰──────────────────╯
@@ -165,7 +166,7 @@ KC_LCTL, TG(LAYER_CALC), KC_NO, KC_RGUI, KC_BSPC, TG(LAYER_MOUSE), KC_MINUS, KC_
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        KC_TAB, KC_ENT, DRGSCRL, XXXXXXX, SNIPING, KC_HOME,        KC_END, S(LGUI(KC_U)), S(LGUI(KC_I)), S(LGUI(KC_O)), KC_NO, QK_BOOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       QK_BOOT, KC_NO,  KC_WH_L, KC_WH_R, KC_WH_U, KC_PGUP,       KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_LCTL, KC_LSFT,
+       KC_LSFT, KC_LCTL,  KC_WH_L, KC_WH_R, KC_WH_U, KC_PGUP,       KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_LCTL, KC_LSFT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_LALT, KC_NO, KC_NO, KC_NO,  KC_WH_D, TG(LAYER_GAME),    KC_KP_7, C(KC_KP_7), KC_KP_1, C(KC_KP_1), KC_KP_3, KC_ESC,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -177,7 +178,7 @@ KC_LCTL, TG(LAYER_CALC), KC_NO, KC_RGUI, KC_BSPC, TG(LAYER_MOUSE), KC_MINUS, KC_
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
        KC_TAB, KC_ENT, DRGSCRL, KC_W, SNIPING, KC_WH_U,         KC_END, S(LGUI(KC_U)), S(LGUI(KC_I)), S(LGUI(KC_O)), KC_NO, QK_BOOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
-       QK_BOOT, KC_NO,  KC_A, KC_S, KC_D, KC_WH_D,              KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_LCTL, KC_LSFT,
+       KC_LSFT, KC_LCTL,  KC_A, KC_S, KC_D, KC_WH_D,              KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_LCTL, KC_LSFT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_LALT, KC_NO, KC_NO, KC_NO,  KC_WH_D, KC_LCTL,            KC_KP_7, C(KC_KP_7), KC_KP_1, C(KC_KP_1), KC_KP_3, KC_ESC,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
@@ -210,6 +211,12 @@ KC_LCTL, TG(LAYER_CALC), KC_NO, KC_RGUI, KC_BSPC, TG(LAYER_MOUSE), KC_MINUS, KC_
 //     return state;
 // }
 
+void sendLayerHid(uint8_t layer) {
+    // uint8_t msg[32] = { 0 };
+    // sprintf((char *)msg, "%u", layer);
+    // raw_hid_send(msg, 32);
+}
+
 void leader_end_user(void) {
     if (leader_sequence_one_key(KC_H)) {
         tap_code16(C(KC_S));
@@ -219,6 +226,11 @@ void leader_end_user(void) {
     }
     else if (leader_sequence_one_key(QK_LEAD)) {
         layer_on(LAYER_MOUSE);
+        sendLayerHid(LAYER_MOUSE);
+    }
+    else if (leader_sequence_one_key(KC_B)) {
+        layer_on(LAYER_GAME);
+        sendLayerHid(LAYER_GAME);
     }
     else if (leader_sequence_one_key(KC_J)) {
         tap_code16(G(KC_F));
@@ -229,5 +241,32 @@ void leader_end_user(void) {
     else if (leader_sequence_one_key(SHIFT_SPACE)) {
         tap_code16(C(KC_O));
     }
-
 }
+
+
+#ifdef RGBLIGHT_ENABLE
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch(biton32(state)) {
+        case LAYER_MOUSE:
+            // rgblight_enable_noeeprom();
+            rgblight_sethsv_noeeprom(HSV_GREEN);
+        break;
+        case LAYER_GAME:
+            // rgblight_enable_noeeprom();
+            rgblight_sethsv_noeeprom(HSV_PURPLE);
+        break;
+        default:
+            // rgblight_disable_noeeprom();
+            // rgblight_enable_noeeprom();
+            rgblight_sethsv_noeeprom(HSV_BLACK);
+    }
+    return state;
+}
+
+void keyboard_post_init_user(void) {
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+    // rgblight_disable_noeeprom();
+    rgblight_sethsv_noeeprom(HSV_BLACK);
+    rgblight_enable_noeeprom();
+}
+#endif
