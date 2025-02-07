@@ -9,12 +9,12 @@ COMMAND_ENABLE = no         # Commands for debug and configuration
 NKRO_ENABLE = no            # Enable N-Key Rollover
 BACKLIGHT_ENABLE = no
 
-RGBLIGHT_ENABLE = yes        # Enable keyboard RGB underglow
+RGBLIGHT_ENABLE = no        # Enable keyboard RGB underglow
 AUDIO_ENABLE = no           # Audio output
 
 AUDIO_SUPPORTED = no        # Audio is not supported
 RGB_MATRIX_SUPPORTED = no  # RGB matrix is supported and enabled by default
-RGBLIGHT_SUPPORTED = yes    # RGB underglow is supported, but not enabled by default
+RGBLIGHT_SUPPORTED = no    # RGB underglow is supported, but not enabled by default
 RGB_MATRIX_ENABLE = no     # Enable keyboard RGB matrix functionality
 
 SPLIT_KEYBOARD = yes
@@ -31,6 +31,5 @@ VIA_ENABLE = no
 COMBO_ENABLE        = yes
 TAP_DANCE_ENABLE = no
 AUTO_SHIFT_ENABLE = no
-POINTING_DEVICE_AUTO_MOUSE_ENABLE = no
 LEADER_ENABLE = yes
 RAW_ENABLE = no

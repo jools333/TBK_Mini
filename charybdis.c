@@ -27,11 +27,11 @@
 
 #ifdef POINTING_DEVICE_ENABLE
 #    ifndef CHARYBDIS_MINIMUM_DEFAULT_DPI
-#        define CHARYBDIS_MINIMUM_DEFAULT_DPI 20
+#        define CHARYBDIS_MINIMUM_DEFAULT_DPI 1
 #    endif // CHARYBDIS_MINIMUM_DEFAULT_DPI
 
 #    ifndef CHARYBDIS_DEFAULT_DPI_CONFIG_STEP
-#        define CHARYBDIS_DEFAULT_DPI_CONFIG_STEP 10
+#        define CHARYBDIS_DEFAULT_DPI_CONFIG_STEP 3
 #    endif // CHARYBDIS_DEFAULT_DPI_CONFIG_STEP
 
 #    ifndef CHARYBDIS_MINIMUM_SNIPING_DPI
@@ -91,7 +91,8 @@ static void write_charybdis_config_to_eeprom(charybdis_config_t* config) {
 
 /** \brief Return the current value of the pointer's default DPI. */
 static uint16_t get_pointer_default_dpi(charybdis_config_t* config) {
-    return (uint16_t)config->pointer_default_dpi * CHARYBDIS_DEFAULT_DPI_CONFIG_STEP + CHARYBDIS_MINIMUM_DEFAULT_DPI;
+    // return (uint16_t)config->pointer_default_dpi * CHARYBDIS_DEFAULT_DPI_CONFIG_STEP + CHARYBDIS_MINIMUM_DEFAULT_DPI;
+    return (uint16_t) 1;
 }
 
 /** \brief Return the current value of the pointer's sniper-mode DPI. */
@@ -382,3 +383,4 @@ void matrix_scan_kb(void) {
     matrix_scan_user();
 }
 #endif // KEYBOARD_bastardkb_charybdis_3x5_blackpill || KEYBOARD_bastardkb_charybdis_4x6_blackpill
+
